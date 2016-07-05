@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-from sklearn import linear_model
-from matplotlib import pyplot as plt
 import os
 import time
 
@@ -28,4 +26,14 @@ else:
 
 print('all_data loaded')
 
+print('\n=========================')
+print('data frame description')
+print('=========================\n')
 print(all_data.describe())
+
+print('\n=========================')
+print('unique values')
+print('=========================')
+
+for column in all_data:
+    print(column, ' - ', len(all_data[column].unique()))

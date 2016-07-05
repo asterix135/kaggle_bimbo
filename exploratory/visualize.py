@@ -1,25 +1,53 @@
-import numpy as np
-import pandas as pd
-import seaborn as sns
-import os
+import matplotlib.pyplot as plt
+
 import time
+from load_data import load_train
 
 start_time = time.time()
-fname = os.path.join(os.path.dirname(os.getcwd()), 'train.csv')
-train_iter = pd.read_csv(fname, error_bad_lines=False, iterator=True,
-                         chunksize=70000)
-print("Data loaded.  Filtering to subset")
-filtered_dfs = []
-for chunk in train_iter:
-    mask = np.random.rand(len(chunk)) < 0.05
-    filtered_dfs.append(chunk[mask])
-train_data = pd.concat(filtered_dfs)
-print("train data has ", len(train_data), ' lines')
+subset = False
 
-print('\nFiltering complete, starting plot')
+all_data = load_train(subset)
 
-g = sns.pairplot(train_data, kind='reg')
-g.savefig('corrplot.png')
+# Histogram for weeks
+plt.hist(all_data['Semana'], bins=7)
+plt.xlabel('Week')
+plt.ylabel('Count')
+plt.title('Week histogram')
+plt.grid(True)
+plt.savefig('histograms/week.png', format='png')
+plt.clf()
 
-duration = time.time() - start_time
-print("completed in ", duration, " seconds")
+# Histogram for weekly sales units
+plt.hist(all_data['Venta_uni_hoy'], log=True, bins=50)
+plt.xlabel('Unit sales per week')
+plt.ylabel('Count')
+plt.title('Histogram of unit sales per week')
+plt.grid(True)
+plt.savefig('histograms/unit_sales.png', format='png')
+plt.clf()
+
+# Histogram for weekly sales in pesos
+plt.hist(all_data['Venta_hoy'], log=True, bins=50)
+plt.xlabel('Peso sales per week')
+plt.ylabel('Count')
+plt.title('Histogram of sales per week in pesos')
+plt.grid(True)
+plt.savefig('histograms/peso_sales.png', format='png')
+plt.clf()
+
+# Histogram for weekly return units
+plt.hist(all_data['Dev_uni_proxima'], log=True, bins=50)
+plt.xlabel('Unit returns per week')
+plt.ylabel('Count')
+plt.title("Histogram of unit returns per week")
+plt.grid(True)
+plt.savefig('histograms/unit_returns.png', format='png')
+plt.clf()
+
+# Histogram for weekly returns in pesos
+plt.hist(all_data["Dev_proxima"], log=True, bins=50)
+plt.xlabel('Returns per week in pesos')
+plt.ylabel('Count')
+plt.title('Histogram of returns per week in pesos')
+plt.grid(True)
+plt.savefig('histograms/peso_returns.png', format='png')

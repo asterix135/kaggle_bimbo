@@ -4,6 +4,7 @@
 
 *.csv
 exploratory/*.png
+exploratory/histograms
 
 ############################################
 # R Section
