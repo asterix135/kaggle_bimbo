@@ -7,20 +7,27 @@ import time
 
 start_time = time.time()
 fname = os.path.join(os.path.dirname(os.getcwd()), 'train.csv')
+subset = False
 
 #####################
 # Load Data subset
 #####################
-train_iter = pd.read_csv(fname, error_bad_lines=False, usecols=[
-    'Venta_uni_hoy', 'Venta_hoy', 'Dev_uni_proxima', 'Dev_proxima',
-    'Demanda_uni_equil'
-],
-                         iterator=True, chunksize=100000)
-filtered_dfs = []
-for chunk in train_iter:
-    mask = np.random.rand(len(chunk)) < 0.05
-    filtered_dfs.append(chunk[mask])
-all_data = pd.concat(filtered_dfs)
+if subset:
+    train_iter = pd.read_csv(fname, error_bad_lines=False, usecols=[
+        'Venta_uni_hoy', 'Venta_hoy', 'Dev_uni_proxima', 'Dev_proxima',
+        'Demanda_uni_equil'
+    ],
+                             iterator=True, chunksize=100000)
+    filtered_dfs = []
+    for chunk in train_iter:
+        mask = np.random.rand(len(chunk)) < 0.05
+        filtered_dfs.append(chunk[mask])
+    all_data = pd.concat(filtered_dfs)
+else:
+    all_data = pd.read_csv(fname, error_bad_lines=False, usecols=[
+        'Venta_uni_hoy', 'Venta_hoy', 'Dev_uni_proxima', 'Dev_proxima',
+        'Demanda_uni_equil'
+    ])
 
 print('all_data loaded')
 
@@ -39,6 +46,7 @@ def create_plot(x_val, y_val, fname, plt_title='Plot', regr_vals=None):
         plt.plot(x_val, regr_vals, color='blue')
     plt.title = plt_title
     plt.savefig(fname, format='png')
+    plt.clf()
 
 ################################
 # Model 1
@@ -147,12 +155,12 @@ mod5.fit(train_set[[
     'Venta_uni_hoy', 'Venta_hoy', 'Dev_uni_proxima', 'Dev_proxima'
 ]], train_set['Demanda_uni_equil'])
 
-mod5_preds = mod4.predict(test_set[[
+mod5_preds = mod5.predict(test_set[[
     'Venta_uni_hoy', 'Venta_hoy', 'Dev_uni_proxima', 'Dev_proxima'
 ]])
 
 print('\n=======================')
-print('Results for model 4 (Multiple)')
+print('Results for model 5 (Multiple)')
 print('Coefficients: \n', mod5.coef_)
 print('RSS: %.2f' % np.mean((mod5_preds - test_set['Demanda_uni_equil'])))
 # print('Variance score %.2f' % mod5.score(x_val_test,

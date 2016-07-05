@@ -1,0 +1,53 @@
+/Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5 /Users/christophergraham/Documents/Code/kaggle/bimbo/exploratory/linear_reg.py
+all_data loaded
+Data loaded.  Time:  66.07252407073975
+/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/scipy/linalg/basic.py:884: RuntimeWarning: internal gelsd driver lwork query error, required iwork dimension not returned. This is likely the result of LAPACK bug 0038, fixed in LAPACK 3.2.2 (released July 21, 2010). Falling back to 'gelss' driver.
+  warnings.warn(mesg, RuntimeWarning)
+
+=======================
+Results for model 1 (venta_uni_hoy
+Coefficients:
+ [ 0.9865411]
+RSS: -0.00
+Variance score 1.00
+=======================
+
+
+=======================
+Results for model 2 (venta_hoy)
+Coefficients:
+ [ 0.05779026]
+RSS: 0.01
+Variance score 0.32
+=======================
+
+
+=======================
+Results for model 3 (Dev_uni_proxima)
+Coefficients:
+ [ 0.17919773]
+RSS: -0.01
+Variance score 0.00
+=======================
+
+
+=======================
+Results for model 4 (Dev_proxima)
+Coefficients:
+ [ 0.01440328]
+RSS: -0.01
+Variance score 0.00
+=======================
+
+
+=======================
+Results for model 5 (Multiple)
+Coefficients:
+ [  9.92355355e-01  -4.99992314e-05   5.32723705e-04  -2.85618016e-02]
+RSS: -0.00
+=======================
+
+Models Built.  Time:  24.171272039413452
+Entire process took:  90.24380707740784
+
+Process finished with exit code 0
