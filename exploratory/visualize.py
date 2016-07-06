@@ -51,3 +51,6 @@ plt.ylabel('Count')
 plt.title('Histogram of returns per week in pesos')
 plt.grid(True)
 plt.savefig('histograms/peso_returns.png', format='png')
+
+# Histogram for Demanda_uni_equil
+plt.hist(all_data['Demanda_uni_equil'], log=True, )

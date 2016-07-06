@@ -9,4 +9,4 @@ all_data = load_train()
 
 for week in range(3, 10):
     fname = '../week' + str(week) + '.csv'
-    all_data.query('Semana'==week).to_csv(fname)
+    all_data[all_data['Semana']==week].to_csv(fname)
