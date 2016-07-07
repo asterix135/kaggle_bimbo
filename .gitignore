@@ -5,6 +5,7 @@
 *.csv
 exploratory/*.png
 exploratory/histograms
+database_details.py
 
 ############################################
 # R Section

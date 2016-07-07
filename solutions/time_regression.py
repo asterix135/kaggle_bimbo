@@ -1,5 +1,5 @@
 """
-THIS BLOWS UP THE MEMORY - DO PREPROCESSING IN SQL
+DO PREPROCESSING IN SQL to avoid blowing up memory
 
 Attempt to predict based on compiled regression of historical
 1. Put data into dataframe by customer/product code with each week's data
@@ -14,43 +14,32 @@ Attempt to predict based on compiled regression of historical
 
 import numpy as np
 import pandas as pd
-from load_data import load_train
 from sklearn import linear_model
+import MySQLdb as mysql
+from database_details import *
 
-# Step 1: Get only unique Cliente/Producto IDs
-all_data = load_train()
+# Step 1: Get data from MySQL
+connection = mysql.connect(host=HOST,
+                           passwd=PASSWORD,
+                           port=PORT,
+                           user=USER,
+                           db=DB)
+SQL = 'SELECT Demanda_uni_equil_3, Demanda_uni_equil_4, Demanda_uni_equil_5, ' \
+      'Demanda_uni_equil_6, Demanda_uni_equil_7, Demanda_uni_equil_8, ' \
+      'Demanda_uni_equil_9 ' \
+      'FROM train'
+uniques = pd.read_sql(SQL, connection)
+connection.close()
+
 modal_demanda = 2
 print('data loaded')
 
-# Step 1: Get only unique Cliente/Producto IDs as a df
-uniques = all_data[['Cliente_ID', 'Producto_ID']].drop_duplicates()
-print('uniques calculated')
 
-# Step 2: Add Demanda_uni_equil for each week 3-9
-for week in range(3, 10):
-    # uniques = pd.concat([uniques, all_data[all_data['Semana'==week]]],
-    #                     axis=1,
-    #                     join='inner')
-    uniques = pd.merge(uniques,
-                       all_data[['Cliente_ID',
-                                 'Producto_ID',
-                                 'Demanda_uni_equil']][
-                           all_data['Semana']==week
-                       ],
-                       # all_data[all_data[['Cliente_ID',
-                       #                    'Producto_ID',
-                       #                    'Demanda_uni_equil']][
-                       #     'Semana'==week]],
-                       on=['Cliente_ID', 'Producto_ID'],
-                       how='left',
-                       suffixes=('', '_' + str(week)))
-print('reshaped dataframe built')
-
-# Step 3: Replace all NaNs with zero (assume no demand for week)
-uniques = uniques.fillna(0)
+# Step 2: Replace all NaNs with zero (assume no demand for week)
+uniques.fillna(0, inplace=True)
 print('NAs filled with zeros')
 
-# Step 4: Split train/test (70/30)
+# Step 3: Split train/test (70/30)
 mask = np.random.rand(len(uniques)) < 0.7
 test_set = uniques[-mask]
 train_set = uniques[mask]
