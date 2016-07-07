@@ -1,6 +1,4 @@
 """
-THIS BLOWS UP THE MEMORY - DO PREPROCESSING IN SQL
-
 Attempt to predict based on compiled regression of historical
 1. Put data into dataframe by customer/product code with each week's data
     included as a column
@@ -16,8 +14,11 @@ import numpy as np
 import pandas as pd
 from load_data import load_train
 from sklearn import linear_model
+import MySQLdb as mysql
 
+# Do all the preliminary stuff in SQL to avoid blowing up memory
 # Step 1: Get only unique Cliente/Producto IDs
+SQL = 'SELECT'
 all_data = load_train()
 modal_demanda = 2
 print('data loaded')
