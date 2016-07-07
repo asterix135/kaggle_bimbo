@@ -14,8 +14,11 @@ import numpy as np
 import pandas as pd
 from load_data import load_train
 from sklearn import linear_model
+import MySQLdb as mysql
 
-
+# Do all the preliminary stuff in SQL to avoid blowing up memory
+# Step 1: Get only unique Cliente/Producto IDs
+SQL = 'SELECT'
 all_data = load_train()
 modal_demanda = 2
 print('data loaded')
@@ -33,7 +36,7 @@ for week in range(3, 10):
                        all_data[['Cliente_ID',
                                  'Producto_ID',
                                  'Demanda_uni_equil']][
-                           all_data['Semana'==week]
+                           all_data['Semana']==week
                        ],
                        # all_data[all_data[['Cliente_ID',
                        #                    'Producto_ID',
@@ -76,9 +79,13 @@ week_8_preds = week_10_mod.predict(test_set[['Demanda_uni_equil',
                                              'Demanda_uni_equil_4',
                                              'Demanda_uni_equil_5',
                                              'Demanda_uni_equil_6',
-                                             'Demanda_uni_equil_7']])
+                                             'Demanda_uni_equil_7']]).\
+    astype(int)
+
 week_9_preds = week_11_mod.predict(test_set[['Demanda_uni_equil',
                                              'Demanda_uni_equil_4',
                                              'Demanda_uni_equil_5',
                                              'Demanda_uni_equil_6',
-                                             'Demanda_uni_equil_7']])
+                                             'Demanda_uni_equil_7']]).\
+    astype(int)
+
