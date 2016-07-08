@@ -15,8 +15,11 @@ Attempt to predict based on compiled regression of historical
 import numpy as np
 import pandas as pd
 from sklearn import linear_model
+from sklearn import metrics
 import pymysql as mysql
 from database_details import *
+
+SUBSET_OF_DATA = False
 
 # Step 1: Get data from MySQL
 connection = mysql.connect(host=HOST,
@@ -27,13 +30,15 @@ connection = mysql.connect(host=HOST,
 SQL = 'SELECT Demanda_uni_equil_3, Demanda_uni_equil_4, Demanda_uni_equil_5, ' \
       'Demanda_uni_equil_6, Demanda_uni_equil_7, Demanda_uni_equil_8, ' \
       'Demanda_uni_equil_9 ' \
-      'FROM train'
+      'FROM uniques'
+if SUBSET_OF_DATA:
+    SQL += ' LIMIT 5000000'
 uniques = pd.read_sql(SQL, connection)
 connection.close()
 
 modal_demanda = 2
+mean_demanda = 7
 print('data loaded')
-
 
 # Step 2: Replace all NaNs with zero (assume no demand for week)
 uniques.fillna(0, inplace=True)
@@ -76,4 +81,35 @@ week_9_preds = week_11_mod.predict(test_set[['Demanda_uni_equil',
                                              'Demanda_uni_equil_6',
                                              'Demanda_uni_equil_7']]).\
     astype(int)
+
+week_8_my_rss = metrics.mean_squared_error(test_set['Demanda_uni_equil_8'],
+                                        week_8_preds)
+week_9_my_rss = metrics.mean_squared_error(test_set['Demanda_uni_equil_9'],
+                                        week_9_preds)
+
+week_8_mode_rss = metrics.mean_squared_error(np.full(len(test_set),
+                                                     modal_demanda),
+                                             week_8_preds)
+week_9_mode_rss = metrics.mean_squared_error(np.full(len(test_set),
+                                                     modal_demanda),
+                                             week_9_preds)
+week_8_mean_rss = metrics.mean_squared_error(np.full(len(test_set),
+                                                     mean_demanda),
+                                             week_8_preds)
+week_9_mean_rss = metrics.mean_squared_error(np.full(len(test_set),
+                                                     mean_demanda),
+                                             week_9_preds)
+
+print('\n=============================')
+print('RESULTS')
+print('=============================')
+print('Week 8')
+print('My RSS: ', week_8_my_rss)
+print('Mode RSS: ', week_8_mode_rss)
+print('Mean RSS: ', week_8_mean_rss, '\n')
+print('Ween 9')
+print('My RSS: ', week_9_my_rss)
+print('Mode RSS: ', week_9_mode_rss)
+print('Mean RSS: ', week_9_mean_rss)
+print('=============================\n')
 
