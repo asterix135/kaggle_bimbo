@@ -15,12 +15,12 @@ Attempt to predict based on compiled regression of historical
 import numpy as np
 import pandas as pd
 from sklearn import linear_model
-import MySQLdb as mysql
+import pymysql as mysql
 from database_details import *
 
 # Step 1: Get data from MySQL
 connection = mysql.connect(host=HOST,
-                           passwd=PASSWORD,
+                           password=PASSWORD,
                            port=PORT,
                            user=USER,
                            db=DB)
