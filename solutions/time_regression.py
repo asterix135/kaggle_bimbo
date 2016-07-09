@@ -54,62 +54,60 @@ train_set = uniques[mask]
 
 
 week_10_mod = linear_model.LinearRegression()
-week_10_mod.fit(train_set[['Demanda_uni_equil',
+week_10_mod.fit(train_set[['Demanda_uni_equil_3',
                            'Demanda_uni_equil_4',
                            'Demanda_uni_equil_5',
                            'Demanda_uni_equil_6',
-                           'Demanda_uni_equil_7']],
-                train_set['Demanda_uni_equil_8'])
+                           'Demanda_uni_equil_7',
+                           'Demanda_uni_equil_8']],
+                train_set['Demanda_uni_equil_9'])
 week_11_mod = linear_model.LinearRegression()
-week_11_mod.fit(train_set[['Demanda_uni_equil',
+week_11_mod.fit(train_set[['Demanda_uni_equil_3',
                            'Demanda_uni_equil_4',
                            'Demanda_uni_equil_5',
                            'Demanda_uni_equil_6',
                            'Demanda_uni_equil_7']],
                 train_set['Demanda_uni_equil_9'])
 
-week_8_preds = week_10_mod.predict(test_set[['Demanda_uni_equil',
-                                             'Demanda_uni_equil_4',
-                                             'Demanda_uni_equil_5',
-                                             'Demanda_uni_equil_6',
-                                             'Demanda_uni_equil_7']]).\
+prev_6_week_preds = week_10_mod.predict(test_set[['Demanda_uni_equil_3',
+                                                  'Demanda_uni_equil_4',
+                                                  'Demanda_uni_equil_5',
+                                                  'Demanda_uni_equil_6',
+                                                  'Demanda_uni_equil_7',
+                                                  'Demanda_uni_equil_8']]).\
     astype(int)
 
-week_9_preds = week_11_mod.predict(test_set[['Demanda_uni_equil',
-                                             'Demanda_uni_equil_4',
-                                             'Demanda_uni_equil_5',
-                                             'Demanda_uni_equil_6',
-                                             'Demanda_uni_equil_7']]).\
+no_prev_week_preds = week_11_mod.predict(test_set[['Demanda_uni_equil_3',
+                                                   'Demanda_uni_equil_4',
+                                                   'Demanda_uni_equil_5',
+                                                   'Demanda_uni_equil_6',
+                                                   'Demanda_uni_equil_7']]).\
     astype(int)
 
-week_8_my_rss = metrics.mean_squared_error(test_set['Demanda_uni_equil_8'],
-                                        week_8_preds)
-week_9_my_rss = metrics.mean_squared_error(test_set['Demanda_uni_equil_9'],
-                                        week_9_preds)
+mock_week_10_preds = metrics.mean_squared_error(test_set['Demanda_uni_equil_9'],
+                                                prev_6_week_preds)
+mock_week_11_preds = metrics.mean_squared_error(test_set['Demanda_uni_equil_9'],
+                                                no_prev_week_preds)
 
-week_8_mode_rss = metrics.mean_squared_error(np.full(len(test_set),
-                                                     modal_demanda),
-                                             week_8_preds)
 week_9_mode_rss = metrics.mean_squared_error(np.full(len(test_set),
                                                      modal_demanda),
-                                             week_9_preds)
-week_8_mean_rss = metrics.mean_squared_error(np.full(len(test_set),
-                                                     mean_demanda),
-                                             week_8_preds)
+                                             no_prev_week_preds)
 week_9_mean_rss = metrics.mean_squared_error(np.full(len(test_set),
                                                      mean_demanda),
-                                             week_9_preds)
+                                             no_prev_week_preds)
 
 print('\n=============================')
 print('RESULTS')
 print('=============================')
-print('Week 8')
-print('My RSS: ', week_8_my_rss)
-print('Mode RSS: ', week_8_mode_rss)
-print('Mean RSS: ', week_8_mean_rss, '\n')
-print('Ween 9')
-print('My RSS: ', week_9_my_rss)
+print('Mock Week 10 RSS: ', mock_week_10_preds)
+print('Mock Week 11 RSS: ', mock_week_11_preds)
 print('Mode RSS: ', week_9_mode_rss)
 print('Mean RSS: ', week_9_mean_rss)
 print('=============================\n')
+
+##################
+# Apply to Kaggle test Set
+##################
+
+# 1. Load test set as data frame
 
