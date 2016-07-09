@@ -7,6 +7,8 @@ cliente_tabla: 935,363 lines
 producto_tabla: 2,593 lines
 town_state.csv: 791 lines
 
+uniques (mySQL) 25,831,538 records
+
 =========================
 data frame description
 =========================
