@@ -54,35 +54,35 @@ train_set = uniques[mask]
 #   weeks 3-7
 
 
-week_10_mod = linear_model.LinearRegression()
-week_10_mod.fit(train_set[['Demanda_uni_equil_3',
-                           'Demanda_uni_equil_4',
-                           'Demanda_uni_equil_5',
-                           'Demanda_uni_equil_6',
-                           'Demanda_uni_equil_7',
-                           'Demanda_uni_equil_8']],
-                train_set['Demanda_uni_equil_9'])
-week_11_mod = linear_model.LinearRegression()
-week_11_mod.fit(train_set[['Demanda_uni_equil_3',
-                           'Demanda_uni_equil_4',
-                           'Demanda_uni_equil_5',
-                           'Demanda_uni_equil_6',
-                           'Demanda_uni_equil_7']],
-                train_set['Demanda_uni_equil_9'])
+week_10_model = linear_model.LinearRegression()
+week_10_model.fit(train_set[['Demanda_uni_equil_3',
+                             'Demanda_uni_equil_4',
+                             'Demanda_uni_equil_5',
+                             'Demanda_uni_equil_6',
+                             'Demanda_uni_equil_7',
+                             'Demanda_uni_equil_8']],
+                  train_set['Demanda_uni_equil_9'])
+week_11_model = linear_model.LinearRegression()
+week_11_model.fit(train_set[['Demanda_uni_equil_3',
+                             'Demanda_uni_equil_4',
+                             'Demanda_uni_equil_5',
+                             'Demanda_uni_equil_6',
+                             'Demanda_uni_equil_7']],
+                  train_set['Demanda_uni_equil_9'])
 
-prev_6_week_preds = week_10_mod.predict(test_set[['Demanda_uni_equil_3',
-                                                  'Demanda_uni_equil_4',
-                                                  'Demanda_uni_equil_5',
-                                                  'Demanda_uni_equil_6',
-                                                  'Demanda_uni_equil_7',
-                                                  'Demanda_uni_equil_8']]).\
+prev_6_week_preds = week_10_model.predict(test_set[['Demanda_uni_equil_3',
+                                                    'Demanda_uni_equil_4',
+                                                    'Demanda_uni_equil_5',
+                                                    'Demanda_uni_equil_6',
+                                                    'Demanda_uni_equil_7',
+                                                    'Demanda_uni_equil_8']]).\
     astype(int)
 
-no_prev_week_preds = week_11_mod.predict(test_set[['Demanda_uni_equil_3',
-                                                   'Demanda_uni_equil_4',
-                                                   'Demanda_uni_equil_5',
-                                                   'Demanda_uni_equil_6',
-                                                   'Demanda_uni_equil_7']]).\
+no_prev_week_preds = week_11_model.predict(test_set[['Demanda_uni_equil_3',
+                                                     'Demanda_uni_equil_4',
+                                                     'Demanda_uni_equil_5',
+                                                     'Demanda_uni_equil_6',
+                                                     'Demanda_uni_equil_7']]).\
     astype(int)
 
 mock_week_10_preds = metrics.mean_squared_error(test_set['Demanda_uni_equil_9'],
@@ -110,7 +110,7 @@ print('=============================\n')
 # Save models for test prediction
 ##################
 
-joblib.dump(week_10_mod, 'Week_10_model1.pkl')
-joblib.dump(week_11_mod, 'Week_11_model1.pkl')
+joblib.dump(week_10_model, 'Week_10_model1.pkl')
+joblib.dump(week_11_model, 'Week_11_model1.pkl')
 
 
