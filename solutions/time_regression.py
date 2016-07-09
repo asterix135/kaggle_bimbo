@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 from sklearn import linear_model
 from sklearn import metrics
+from sklearn.externals import joblib
 import pymysql as mysql
 from database_details import *
 
@@ -106,10 +107,10 @@ print('Mean RSS: ', week_9_mean_rss)
 print('=============================\n')
 
 ##################
-# Apply to Kaggle test Set
+# Save models for test prediction
 ##################
 
-# 1. Extract only test set values that have a match in the train set
-
+joblib.dump(week_10_mod, 'Week_10_model1.pkl')
+joblib.dump(week_11_mod, 'Week_11_model1.pkl')
 
 

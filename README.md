@@ -47,6 +47,10 @@ training data set shown in [train_describe.txt](exploratory/train_describe.txt):
 
 ## Reshape Data
 
+One of the challenges I'm facing is manipulating this data in memory on a 8MB
+MacBook.  I managed to blow up the memory a few times.  In order to avoid this,
+I've moved much of the data to a MySQL database, which allows for much more 
+memory-efficient storage and manipulation.
 
 ## Simple solution 1
 

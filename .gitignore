@@ -2,10 +2,18 @@
 # My stuff
 ###########################################
 
+# Exclude data files
 *.csv
+
+# Exclude images/charts
 exploratory/*.png
 exploratory/histograms
+
+# Exclude database details
 database_details.py
+
+# Exclude pickled files
+*.pkl
 
 ############################################
 # R Section
