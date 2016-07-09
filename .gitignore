@@ -14,6 +14,7 @@ database_details.py
 
 # Exclude pickled files
 *.pkl
+*.npy
 
 ############################################
 # R Section
