@@ -60,4 +60,13 @@ set)
 2) We are missing the week immediately prior to the test week, but have the
 previous five weeks' data (this will apply to week 11 in the test set)
 
+[Applying this methodology selectively to Week 9 data]
+(solutions/time_regression.py) provides results that are noticeably better than
+using either the modal or mean value for adjusted demand:
 
+| Approach | RSS |
+| --- | --- |
+| Mock Week 10 | 59.73 |
+| Mock Week 11 | 70.58 |
+| Mode | 95.32 |
+| Mean | 117.53 |

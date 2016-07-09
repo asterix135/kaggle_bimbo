@@ -109,5 +109,7 @@ print('=============================\n')
 # Apply to Kaggle test Set
 ##################
 
-# 1. Load test set as data frame
+# 1. Extract only test set values that have a match in the train set
+
+
 
