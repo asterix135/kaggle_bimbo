@@ -52,6 +52,14 @@ MacBook.  I managed to blow up the memory a few times.  In order to avoid this,
 I've moved much of the data to a MySQL database, which allows for much more 
 memory-efficient storage and manipulation.
 
+This means however, that there's a lot of boring data pre-processing that has
+to be run to enable me to get complete solutions.
+
+Essentially, I created a MySQL file I called uniques that contains a row for
+each unique customer/product combination.  As well, it contains a field 
+indicating the id value from the test file if that record exists in the test
+file.
+
 ## Simple solution 1
 
 The simplest solution that presents itself here is a multiple linear regression
@@ -74,3 +82,8 @@ using either the modal or mean value for adjusted demand:
 | Mock Week 11 | 70.58 |
 | Mode | 95.32 |
 | Mean | 117.53 |
+
+So, as a first crack at the problem, I ran these two models against any 
+client/product combinations in the test file that were also in the training
+file.  For any new combinations (new product or new customer), I imputed the 
+modal adjusted demand figure.
